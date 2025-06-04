@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>YouTube Media Notes for Obsidian - Options</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+      color: #333;
+    }
+    .form-group {
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #eee;
+    }
+    .form-group:last-child {
+      border-bottom: none;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+    input[type="text"], select, textarea {
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    textarea {
+      min-height: 120px;
+      font-family: monospace;
+    }
+    button {
+      background-color: #7C3AED;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    button:hover {
+      background-color: #6D28D9;
+    }
+    .status {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 4px;
+      display: none;
+    }
+    .success {
+      background-color: #D1FAE5;
+      color: #065F46;
+    }
+    .section-title {
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: #4B5563;
+    }
+    .setting-description {
+      font-size: 13px;
+      color: #6B7280;
+      margin-bottom: 8px;
+    }
+    .vault-section {
+      background-color: #F9FAFB;
+      padding: 15px;
+      border-radius: 4px;
+      margin-bottom: 15px;
+    }
+    .help-text {
+      font-size: 12px;
+      color: #6B7280;
+      margin-top: 5px;
+    }
+    .template-variables {
+      background-color: #F3F4F6;
+      padding: 10px;
+      border-radius: 4px;
+      margin-top: 10px;
+    }
+    .template-variables code {
+      background-color: #E5E7EB;
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <h1>YouTube Media Notes for Obsidian</h1>
+  
+  <div class="form-group">
+    <div class="section-title">Obsidian Vault Settings</div>
+    <div class="setting-description">Configure how your notes are saved to Obsidian</div>
+    
+    <div class="vault-section">
+      <div class="form-group">
+        <label for="vaultName">Vault Name:</label>
+        <input type="text" id="vaultName" placeholder="e.g., MyVault">
+        <div class="help-text">Leave empty to use the default vault. This should match exactly the name of your Obsidian vault.</div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <div class="section-title">Note Location</div>
+    <div class="setting-description">Configure where your notes are stored within your vault</div>
+    
+    <div class="form-group">
+      <label for="folderPath">Folder Path:</label>
+      <input type="text" id="folderPath" placeholder="e.g., Videos/YouTube">
+      <div class="help-text">The folder path within your vault where notes will be saved. Leave empty to save in the vault root.</div>
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <div class="section-title">Note Format</div>
+    <div class="setting-description">Configure how your notes are formatted</div>
+    
+    <div class="form-group">
+      <label for="titlePrefix">Title Prefix:</label>
+      <input type="text" id="titlePrefix" placeholder="e.g., Video. ">
+      <div class="help-text">Text to prepend to the note title.</div>
+    </div>
+    
+    <div class="form-group">
+      <label for="tags">Tags (comma separated):</label>
+      <input type="text" id="tags" placeholder="e.g., VideoReviews, YouTube">
+      <div class="help-text">Tags to include in your notes.</div>
+    </div>
+    
+    <div class="form-group">
+      <label for="noteTemplate">Note Template:</label>
+      <textarea id="noteTemplate" placeholder="---&#10;media_link: {{url}}&#10;tags: {{tags}}&#10;---"></textarea>
+      <div class="template-variables">
+        <strong>Available variables:</strong>
+        <ul>
+          <li><code>{{url}}</code> - The YouTube URL with timestamp</li>
+          <li><code>{{title}}</code> - The video title</li>
+          <li><code>{{tags}}</code> - Your custom tags</li>
+          <li><code>{{timestamp}}</code> - The current timestamp in seconds</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  
+  <button id="save">Save Settings</button>
+  
+  <div id="status" class="status"></div>
+
+  <script src="options.js"></script>
+</body>
+</html>
