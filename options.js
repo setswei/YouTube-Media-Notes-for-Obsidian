@@ -4,7 +4,8 @@ const defaultSettings = {
   folderPath: "zz_assets/video_reviews",
   tags: "VideoReviews",
   titlePrefix: "Video. ",
-  noteTemplate: "---\nmedia_link: {{url}}\ntags: {{tags}}\n---"
+  noteTemplate: "---\nmedia_link: {{url}}\ntags: {{tags}}\n---",
+  closeTabDelay: 2500
 };
 
 // Load saved settings or use defaults
@@ -16,6 +17,7 @@ function loadSettings() {
     document.getElementById('tags').value = settings.tags || defaultSettings.tags;
     document.getElementById('titlePrefix').value = settings.titlePrefix || defaultSettings.titlePrefix;
     document.getElementById('noteTemplate').value = settings.noteTemplate || defaultSettings.noteTemplate;
+    document.getElementById('closeTabDelay').value = settings.closeTabDelay || defaultSettings.closeTabDelay;
   });
 }
 
@@ -26,7 +28,8 @@ function saveSettings() {
     folderPath: document.getElementById('folderPath').value.trim() || defaultSettings.folderPath,
     tags: document.getElementById('tags').value.trim() || defaultSettings.tags,
     titlePrefix: document.getElementById('titlePrefix').value || defaultSettings.titlePrefix,
-    noteTemplate: document.getElementById('noteTemplate').value || defaultSettings.noteTemplate
+    noteTemplate: document.getElementById('noteTemplate').value || defaultSettings.noteTemplate,
+    closeTabDelay: parseInt(document.getElementById('closeTabDelay').value) || defaultSettings.closeTabDelay
   };
   
   console.log("Saving settings to storage:", settings);

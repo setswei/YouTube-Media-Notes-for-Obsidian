@@ -7,7 +7,8 @@ const defaultSettings = {
   folderPath: "zz_assets/video_reviews",
   tags: "VideoReviews",
   titlePrefix: "Video. ",
-  noteTemplate: "---\nmedia_link: {{url}}\ntags: {{tags}}\n---"
+  noteTemplate: "---\nmedia_link: {{url}}\ntags: {{tags}}\n---",
+  closeTabDelay: 2500
 };
 
 // Process the template with data
@@ -111,7 +112,19 @@ function handleButtonClick(tab) {
           obsidianUrl += `&content=${encodeURIComponent(content)}`;
           
           console.log("Opening Obsidian URL:", obsidianUrl);
-          chrome.tabs.create({ url: obsidianUrl });
+          
+          // Instead of creating a new tab, update the current tab
+          // and then navigate back to the YouTube page after a delay
+          const currentUrl = tab.url;
+          
+          chrome.tabs.update(tab.id, { url: obsidianUrl }, function() {
+            // Set a timeout to navigate back to the YouTube video
+            setTimeout(function() {
+              chrome.tabs.update(tab.id, { url: currentUrl }, function() {
+                console.log("Navigated back to YouTube video");
+              });
+            }, settings.closeTabDelay || 2500); // Use the configured delay
+          });
         } catch (error) {
           console.error("Error processing data:", error);
           alert("Error creating note: " + error.message);
