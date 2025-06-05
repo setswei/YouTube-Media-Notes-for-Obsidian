@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>YouTube Media Notes for Obsidian - Options</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="options-container">
+    <h1>YouTube Media Notes for Obsidian</h1>
+    
+    <!-- Vault Settings Section -->
+    <div class="card">
+      <h2>Obsidian Vault Settings</h2>
+      <p class="description">Configure how your notes are saved to Obsidian</p>
+      
+      <div class="vault-section">
+        <div class="form-group">
+          <label for="vaultName">Vault Name:</label>
+          <input type="text" id="vaultName" placeholder="e.g., MyVault">
+          <p class="help-text">Leave empty to use the default vault. This should match exactly the name of your Obsidian vault.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Note Location Section -->
+    <div class="card">
+      <h2>Note Location</h2>
+      <p class="description">Configure where your notes are stored within your vault</p>
+      
+      <div class="form-group">
+        <label for="folderPath">Folder Path:</label>
+        <input type="text" id="folderPath" placeholder="e.g., Videos/YouTube">
+        <p class="help-text">The folder path within your vault where notes will be saved. Leave empty to save in the vault root.</p>
+      </div>
+    </div>
+
+    <!-- Note Format Section -->
+    <div class="card">
+      <h2>Note Format</h2>
+      <p class="description">Configure how your notes are formatted</p>
+      
+      <!-- Title Prefix -->
+      <div class="form-group">
+        <label for="titlePrefix">Title Prefix:</label>
+        <input type="text" id="titlePrefix" placeholder="e.g., Video. ">
+        <p class="help-text">Text to prepend to the note title.</p>
+      </div>
+
+      <!-- Tags -->
+      <div class="form-group">
+        <label for="tags">Tags (comma separated):</label>
+        <input type="text" id="tags" placeholder="e.g., VideoReviews, YouTube">
+        <p class="help-text">Tags to include in your notes.</p>
+      </div>
+
+      <!-- Note Template -->
+      <div class="form-group">
+        <label for="noteTemplate">Note Template:</label>
+        <textarea id="noteTemplate" placeholder="---&#10;media_link: {{url}}&#10;tags: {{tags}}&#10;---"></textarea>
+        
+        <div class="info-box">
+          <p class="info-title">Available variables:</p>
+          <ul class="info-list">
+            <li><code>{{url}}</code> - The YouTube URL with timestamp</li>
+            <li><code>{{title}}</code> - The video title</li>
+            <li><code>{{tags}}</code> - Your custom tags</li>
+            <li><code>{{timestamp}}</code> - The current timestamp in seconds</li>
+          </ul>
+          <p>
+            <strong>Note:</strong>
+            Timestamps from the video description will be automatically added to the end of the note if they exist.
+          </p>
+        </div>
+      </div>
+
+      <!-- Auto-close Delay -->
+      <div class="form-group">
+        <label for="closeTabDelay">Auto-close delay (milliseconds):</label>
+        <input type="number" id="closeTabDelay" min="500" max="10000" step="100" placeholder="2500">
+        <p class="help-text">Time to wait before closing the Obsidian URL tab (in milliseconds). Default: 2500</p>
+      </div>
+    </div>
+
+    <!-- Save Button -->
+    <button id="save" class="button primary">Save Settings</button>
+    
+    <!-- Status Message -->
+    <div id="status" class="status"></div>
+
+    <!-- Footer -->
+    <footer>
+      YouTube Media Notes for Obsidian v1.0 - 
+      <a href="https://github.com/yourusername/obsidian_youtube_note_clipper" target="_blank">GitHub</a>
+    </footer>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>

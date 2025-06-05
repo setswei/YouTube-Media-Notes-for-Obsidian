@@ -1,0 +1,345 @@
+/**
+ * YouTube Media Notes for Obsidian - Global Styles
+ * 
+ * This file contains all styles for the extension, including:
+ * - Theme variables (colors, spacing, etc.)
+ * - Base styles for common elements
+ * - Component-specific styles for popup and options pages
+ * - Light and dark mode support
+ */
+
+/* Theme Variables */
+:root {
+  /* Colors */
+  --color-primary: #7C3AED;
+  --color-primary-dark: #6D28D9;
+  --color-primary-light: #8B5CF6;
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-gray-50: #F9FAFB;
+  --color-gray-100: #F3F4F6;
+  --color-gray-200: #E5E7EB;
+  --color-gray-300: #D1D5DB;
+  --color-gray-400: #9CA3AF;
+  --color-gray-500: #6B7280;
+  --color-gray-600: #4B5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1F2937;
+  --color-gray-900: #111827;
+  --color-green-100: #D1FAE5;
+  --color-green-800: #065F46;
+  --color-green-900: #064E3B;
+  --color-green-200: #A7F3D0;
+  --color-red-100: #FEE2E2;
+  --color-red-800: #B91C1C;
+  --color-red-900: #7F1D1D;
+  --color-red-200: #FCA5A5;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  
+  /* Transitions */
+  --transition-colors: background-color 0.3s, color 0.3s, border-color 0.3s;
+  --transition-shadow: box-shadow 0.3s;
+}
+
+/* Dark mode variables */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color: var(--color-gray-900);
+    --text-color: var(--color-gray-200);
+    --heading-color: var(--color-white);
+    --card-bg: var(--color-gray-800);
+    --input-bg: var(--color-gray-800);
+    --input-border: var(--color-gray-600);
+    --input-text: var(--color-white);
+    --placeholder-color: var(--color-gray-500);
+    --help-text-color: var(--color-gray-400);
+    --section-title-color: var(--color-white);
+    --section-desc-color: var(--color-gray-400);
+    --code-bg: var(--color-gray-600);
+    --info-bg: var(--color-gray-700);
+    --link-color: var(--color-primary-light);
+    --link-hover-color: var(--color-primary);
+    --button-primary-bg: var(--color-primary-light);
+    --button-primary-hover: var(--color-primary);
+    --button-secondary-bg: var(--color-gray-700);
+    --button-secondary-hover: var(--color-gray-600);
+    --button-disabled-bg: var(--color-gray-600);
+    --button-disabled-color: var(--color-gray-400);
+    --success-bg: var(--color-green-900);
+    --success-text: var(--color-green-200);
+    --error-bg: var(--color-red-900);
+    --error-text: var(--color-red-200);
+  }
+}
+
+/* Light mode variables */
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg-color: var(--color-white);
+    --text-color: var(--color-gray-800);
+    --heading-color: var(--color-gray-900);
+    --card-bg: var(--color-white);
+    --input-bg: var(--color-white);
+    --input-border: var(--color-gray-300);
+    --input-text: var(--color-gray-900);
+    --placeholder-color: var(--color-gray-400);
+    --help-text-color: var(--color-gray-500);
+    --section-title-color: var(--color-gray-900);
+    --section-desc-color: var(--color-gray-600);
+    --code-bg: var(--color-gray-200);
+    --info-bg: var(--color-gray-50);
+    --link-color: var(--color-primary);
+    --link-hover-color: var(--color-primary-dark);
+    --button-primary-bg: var(--color-primary);
+    --button-primary-hover: var(--color-primary-dark);
+    --button-secondary-bg: var(--color-gray-100);
+    --button-secondary-hover: var(--color-gray-200);
+    --button-disabled-bg: var(--color-gray-200);
+    --button-disabled-color: var(--color-gray-500);
+    --success-bg: var(--color-green-100);
+    --success-text: var(--color-green-800);
+    --error-bg: var(--color-red-100);
+    --error-text: var(--color-red-800);
+  }
+}
+
+/* Base styles */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.5;
+  margin: 0;
+  transition: var(--transition-colors);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--heading-color);
+  margin-top: 0;
+}
+
+a {
+  color: var(--link-color);
+  text-decoration: none;
+  transition: var(--transition-colors);
+}
+
+a:hover {
+  color: var(--link-hover-color);
+  text-decoration: underline;
+}
+
+/* Button styles */
+.button {
+  display: block;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  transition: background-color 0.2s;
+}
+
+.button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.4);
+}
+
+.button.primary {
+  background-color: var(--button-primary-bg);
+  color: white;
+}
+
+.button.primary:hover {
+  background-color: var(--button-primary-hover);
+}
+
+.button.secondary {
+  background-color: var(--button-secondary-bg);
+  color: var(--text-color);
+}
+
+.button.secondary:hover {
+  background-color: var(--button-secondary-hover);
+}
+
+.button:disabled {
+  background-color: var(--button-disabled-bg);
+  color: var(--button-disabled-color);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.icon {
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* Form styles */
+input[type="text"],
+input[type="number"],
+textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--input-border);
+  background-color: var(--input-bg);
+  color: var(--input-text);
+  font-size: 14px;
+  transition: var(--transition-colors);
+  box-sizing: border-box;
+}
+
+textarea {
+  min-height: 120px;
+  font-family: monospace;
+  resize: vertical;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--placeholder-color);
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+}
+
+label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: var(--text-color);
+}
+
+.help-text {
+  font-size: 12px;
+  color: var(--help-text-color);
+  margin-top: 6px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+/* Status message */
+.status {
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  display: none;
+}
+
+.status.success {
+  background-color: var(--success-bg);
+  color: var(--success-text);
+}
+
+.status.error {
+  background-color: var(--error-bg);
+  color: var(--error-text);
+}
+
+/* Code styles */
+code {
+  background-color: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 13px;
+}
+
+/* Popup specific styles */
+.popup-container {
+  width: 200px;
+  padding: 10px;
+}
+
+.popup-container h1 {
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.popup-container .button {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+/* Options page specific styles */
+.options-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.options-container h1 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 32px;
+}
+
+.card {
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  box-shadow: var(--shadow-md);
+  padding: 24px;
+  margin-bottom: 24px;
+  transition: var(--transition-colors);
+}
+
+.description {
+  font-size: 14px;
+  color: var(--section-desc-color);
+  margin-bottom: 16px;
+}
+
+.info-box {
+  background-color: var(--info-bg);
+  border-radius: 6px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.info-title {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: var(--section-title-color);
+}
+
+.info-list {
+  margin: 0;
+  padding: 0 0 0 20px;
+  margin-bottom: 16px;
+}
+
+.info-list li {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.vault-section {
+  background-color: var(--info-bg);
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+footer {
+  margin-top: 32px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--help-text-color);
+}
