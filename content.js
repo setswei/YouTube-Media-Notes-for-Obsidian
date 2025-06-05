@@ -5,6 +5,33 @@ console.log("Content script loaded on YouTube page");
 function extractTimestamps() {
   console.log("Extracting timestamps from video");
   
+  // First, try to expand the description if it's collapsed
+  try {
+    const expandButton = document.querySelector('tp-yt-paper-button#expand');
+    if (expandButton) {
+      console.log("Found expand button, clicking it...");
+      expandButton.click();
+      // Give a small delay for the description to expand
+      console.log("Waiting for description to expand...");
+      // We'll use a small timeout to allow the description to expand
+      return new Promise(resolve => {
+        setTimeout(() => {
+          console.log("Description should be expanded now, extracting timestamps...");
+          resolve(extractTimestampsFromPage());
+        }, 500); // 500ms delay
+      });
+    } else {
+      console.log("No expand button found, description might already be expanded");
+      return Promise.resolve(extractTimestampsFromPage());
+    }
+  } catch (e) {
+    console.error("Error expanding description:", e);
+    return Promise.resolve(extractTimestampsFromPage());
+  }
+}
+
+// Function that contains the actual timestamp extraction logic
+function extractTimestampsFromPage() {
   // First try to get official YouTube chapters
   const chapterElements = document.querySelectorAll("ytd-chapter-renderer");
   
@@ -146,26 +173,40 @@ function clipYouTubeNote(sendResponse) {
     const title = document.title.replace(" - YouTube", "");
     console.log("Video title:", title);
     
-    // Extract timestamps from description
-    const timestamps = extractTimestamps();
-    
-    // Send data back to background script
-    const response = {
-      status: "ok",
-      data: {
-        url: url.toString(),
-        title,
-        timestamp: currentTime,
-        timestamps: timestamps
-      }
-    };
-    
-    console.log("Sending response:", response);
-    sendResponse(response);
+    // Extract timestamps from description (now returns a Promise)
+    extractTimestamps().then(timestamps => {
+      // Send data back to background script
+      const response = {
+        status: "ok",
+        data: {
+          url: url.toString(),
+          title,
+          timestamp: currentTime,
+          timestamps: timestamps
+        }
+      };
+      
+      console.log("Sending response:", response);
+      sendResponse(response);
+    }).catch(error => {
+      console.error("Error extracting timestamps:", error);
+      sendResponse({ 
+        status: "ok",
+        data: {
+          url: url.toString(),
+          title,
+          timestamp: currentTime,
+          timestamps: []
+        }
+      });
+    });
   } catch (error) {
     console.error("Error in content script:", error);
     sendResponse({ status: "error", message: error.toString() });
   }
+  
+  // Return true to indicate we'll call sendResponse asynchronously
+  return true;
 }
 
 // Listen for messages from the background script
