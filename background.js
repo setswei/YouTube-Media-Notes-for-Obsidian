@@ -21,10 +21,15 @@ function processTemplate(template, data) {
   
   // Add timestamps if available
   if (data.timestamps && data.timestamps.length > 0) {
-    let timestampsMarkdown = "\n\n## Timestamps\n";
+    let timestampsMarkdown = "\n\n## Timestamps\n\n";
     
+    // Create markdown table header
+    timestampsMarkdown += "| Time | Chapter |\n";
+    timestampsMarkdown += "|------|--------|\n";
+    
+    // Add each timestamp as a table row
     data.timestamps.forEach(ts => {
-      timestampsMarkdown += `- [${ts.time} - ${ts.label}](${ts.url})\n`;
+      timestampsMarkdown += `| [${ts.time}](${ts.url}) | ${ts.label} |\n`;
     });
     
     processed += timestampsMarkdown;
