@@ -55,22 +55,33 @@ function saveSettings() {
   chrome.storage.sync.set(settings, function() {
     if (chrome.runtime.lastError) {
       console.error("Error saving settings:", chrome.runtime.lastError);
-      const status = document.getElementById('status');
-      status.textContent = 'Error saving settings: ' + chrome.runtime.lastError.message;
-      status.className = 'status error';
-      status.style.display = 'block';
+      showStatus('error', 'Error saving settings: ' + chrome.runtime.lastError.message);
       return;
     }
     
-    const status = document.getElementById('status');
-    status.textContent = 'Settings saved successfully!';
-    status.className = 'status success';
-    status.style.display = 'block';
-    
-    setTimeout(function() {
-      status.style.display = 'none';
-    }, 3000);
+    showStatus('success', 'Settings saved successfully!');
   });
+}
+
+/**
+ * Show status message
+ * @param {string} type - 'success' or 'error'
+ * @param {string} message - The message to display
+ */
+function showStatus(type, message) {
+  const status = document.getElementById('status');
+  status.textContent = message;
+  status.style.display = 'block';
+  
+  if (type === 'success') {
+    status.className = 'status success';
+  } else {
+    status.className = 'status error';
+  }
+  
+  setTimeout(function() {
+    status.style.display = 'none';
+  }, 3000);
 }
 
 /**
@@ -97,6 +108,7 @@ function clearAllSettings() {
   chrome.storage.sync.clear(function() {
     console.log("All settings cleared");
     loadSettings(); // Reload with defaults
+    showStatus('success', 'Settings reset to defaults');
   });
 }
 

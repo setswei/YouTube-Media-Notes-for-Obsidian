@@ -3,117 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <title>YouTube Media Notes</title>
-  <style>
-    body {
-      width: 200px;
-      padding: 10px;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      transition: background-color 0.3s, color 0.3s;
-    }
-    
-    /* Light mode (default) */
-    body {
-      background-color: #ffffff;
-      color: #333333;
-    }
-    
-    .button {
-      display: block;
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 8px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      text-align: center;
-      font-size: 14px;
-      transition: background-color 0.3s, color 0.3s;
-    }
-    
-    .primary {
-      background-color: #7C3AED;
-      color: white;
-    }
-    
-    .primary:hover {
-      background-color: #6D28D9;
-    }
-    
-    .secondary {
-      background-color: #F3F4F6;
-      color: #374151;
-    }
-    
-    .secondary:hover {
-      background-color: #E5E7EB;
-    }
-    
-    .icon {
-      margin-right: 8px;
-      vertical-align: middle;
-    }
-    
-    h1 {
-      font-size: 16px;
-      margin-top: 0;
-      margin-bottom: 12px;
-      color: #374151;
-      transition: color 0.3s;
-    }
-    
-    /* Dark mode */
-    @media (prefers-color-scheme: dark) {
-      body {
-        background-color: #1F2937;
-        color: #E5E7EB;
-      }
-      
-      h1 {
-        color: #F9FAFB;
-      }
-      
-      .secondary {
-        background-color: #374151;
-        color: #E5E7EB;
-      }
-      
-      .secondary:hover {
-        background-color: #4B5563;
-      }
-      
-      /* Primary button stays mostly the same in dark mode, just slightly adjusted */
-      .primary {
-        background-color: #8B5CF6;
-      }
-      
-      .primary:hover {
-        background-color: #7C3AED;
-      }
-      
-      /* Disabled button in dark mode */
-      .button:disabled {
-        background-color: #4B5563;
-        color: #9CA3AF;
-        cursor: not-allowed;
-      }
-    }
-    
-    /* Common styles for both modes */
-    .button:disabled {
-      opacity: 0.7;
-      cursor: not-allowed;
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>YouTube Media Notes</h1>
-  <button id="addToObsidian" class="button primary">
-    <span class="icon">+</span> Add to Obsidian
-  </button>
-  <button id="openSettings" class="button secondary">
-    <span class="icon">⚙</span> Settings
-  </button>
+  <div class="popup-container">
+    <h1>YouTube Media Notes</h1>
+    <button id="addToObsidian" class="button primary">
+      <span class="icon">+</span> Add to Obsidian
+    </button>
+    <button id="openSettings" class="button secondary">
+      <span class="icon">⚙</span> Settings
+    </button>
+  </div>
 
   <script src="popup.js"></script>
 </body>
