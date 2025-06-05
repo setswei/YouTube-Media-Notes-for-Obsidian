@@ -1,7 +1,21 @@
-// Add console logging for debugging
+/**
+ * YouTube Media Notes for Obsidian - Content Script
+ * 
+ * This script runs in the context of YouTube pages and handles:
+ * - Extracting video information
+ * - Finding and extracting timestamps/chapters
+ * - Sending data back to the background script
+ */
+
+// Log when the content script loads
 console.log("Content script loaded on YouTube page");
 
-// Function to extract timestamps from YouTube video
+/**
+ * Extract timestamps from the YouTube video
+ * First tries to expand the description if needed, then extracts timestamps
+ * 
+ * @returns {Promise<Array>} - Promise resolving to an array of timestamp objects
+ */
 function extractTimestamps() {
   console.log("Extracting timestamps from video");
   
@@ -13,7 +27,6 @@ function extractTimestamps() {
       expandButton.click();
       // Give a small delay for the description to expand
       console.log("Waiting for description to expand...");
-      // We'll use a small timeout to allow the description to expand
       return new Promise(resolve => {
         setTimeout(() => {
           console.log("Description should be expanded now, extracting timestamps...");
@@ -30,7 +43,12 @@ function extractTimestamps() {
   }
 }
 
-// Function that contains the actual timestamp extraction logic
+/**
+ * Extract timestamps from the page after ensuring description is expanded
+ * Tries multiple methods to find timestamps
+ * 
+ * @returns {Array} - Array of timestamp objects with time, label, seconds, and URL
+ */
 function extractTimestampsFromPage() {
   // First try to get official YouTube chapters
   const chapterElements = document.querySelectorAll("ytd-chapter-renderer");
@@ -120,7 +138,13 @@ function extractTimestampsFromPage() {
   return uniqueTimestamps;
 }
 
-// Function to convert timestamp (HH:MM:SS or MM:SS) to seconds
+/**
+ * Convert timestamp string to seconds
+ * Handles both MM:SS and HH:MM:SS formats
+ * 
+ * @param {string} timestamp - Timestamp string (e.g., "1:30" or "1:30:45")
+ * @returns {number} - Timestamp in seconds
+ */
 function convertTimestampToSeconds(timestamp) {
   // Clean up the timestamp string
   const cleanTimestamp = timestamp.trim().replace(/\s+/g, '');
@@ -138,7 +162,13 @@ function convertTimestampToSeconds(timestamp) {
   return 0;
 }
 
-// Function to handle the clip note action
+/**
+ * Handle the clip note action
+ * Gets video information and timestamps, then sends them to the background script
+ * 
+ * @param {function} sendResponse - Function to send response back to background script
+ * @returns {boolean} - True to indicate we'll call sendResponse asynchronously
+ */
 function clipYouTubeNote(sendResponse) {
   try {
     console.log("Processing clipNote action");

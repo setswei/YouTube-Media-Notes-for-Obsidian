@@ -1,18 +1,39 @@
-// Add console logging for debugging
+/**
+ * YouTube Media Notes for Obsidian - Background Script
+ * 
+ * This script handles the main functionality of the extension:
+ * - Processing button clicks
+ * - Communicating with the content script
+ * - Creating and formatting notes
+ * - Opening Obsidian with the formatted note
+ */
+
+// Log when the background script loads
 console.log("Background script loaded");
 
-// Default settings
+/**
+ * Default settings for the extension
+ * These will be used if no user settings are found
+ */
 const defaultSettings = {
-  vaultName: "",
-  folderPath: "zz_assets/video_reviews",
-  tags: "VideoReviews",
-  titlePrefix: "Video. ",
-  noteTemplate: "---\nmedia_link: {{url}}\ntags: {{tags}}\n---",
-  closeTabDelay: 2500
+  vaultName: "",                                      // Obsidian vault name (empty = default vault)
+  folderPath: "zz_assets/video_reviews",              // Folder path within the vault
+  tags: "VideoReviews",                               // Default tags for notes
+  titlePrefix: "Video. ",                             // Prefix for note titles
+  noteTemplate: "---\nmedia_link: {{url}}\ntags: {{tags}}\n---", // Default note template
+  closeTabDelay: 2500                                 // Delay before returning to YouTube (ms)
 };
 
-// Process the template with data
+/**
+ * Process the template with data
+ * Replaces template variables with actual data and adds timestamps if available
+ * 
+ * @param {string} template - The note template with variables
+ * @param {object} data - Object containing data to insert into the template
+ * @returns {string} - The processed template with all variables replaced
+ */
 function processTemplate(template, data) {
+  // Replace template variables with actual data
   let processed = template
     .replace(/{{url}}/g, data.url)
     .replace(/{{title}}/g, data.title)
@@ -38,17 +59,35 @@ function processTemplate(template, data) {
   return processed;
 }
 
-// Create an Obsidian-friendly filename
+/**
+ * Create an Obsidian-friendly filename
+ * Replaces characters that might cause issues in filenames
+ * 
+ * @param {string} title - The original title
+ * @param {string} prefix - Prefix to add to the title
+ * @returns {string} - The sanitized filename with prefix
+ */
 function makeObsidianFriendly(title, prefix) {
   return prefix + title.replace(/[:/\\^|#]/g, ".");
 }
 
-// Sanitize a filename to be safe for file systems
+/**
+ * Sanitize a filename to be safe for file systems
+ * Removes characters that are not allowed in filenames
+ * 
+ * @param {string} fileName - The filename to sanitize
+ * @returns {string} - The sanitized filename
+ */
 function sanitizeFileName(fileName) {
   return fileName.replace(/[\\/:*?"<>|]/g, ".");
 }
 
-// Function to execute when the extension button is clicked
+/**
+ * Handle the extension button click
+ * This is the main function that runs when the user clicks the extension button
+ * 
+ * @param {object} tab - The current browser tab
+ */
 function handleButtonClick(tab) {
   console.log("Extension button clicked", tab);
   
@@ -61,7 +100,6 @@ function handleButtonClick(tab) {
   
   // Get user settings
   chrome.storage.sync.get(defaultSettings, function(settings) {
-    // Log the actual settings we're using
     console.log("Settings loaded from storage:", settings);
     
     // Inject content script if not already injected
@@ -111,7 +149,7 @@ function handleButtonClick(tab) {
           };
           const content = processTemplate(noteTemplate, templateData);
           
-          // Build the Obsidian URL - using the approach from the example code
+          // Build the Obsidian URL
           let obsidianUrl = "obsidian://new";
           
           // Ensure path ends with a slash if it's not empty

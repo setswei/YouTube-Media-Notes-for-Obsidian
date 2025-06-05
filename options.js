@@ -1,14 +1,29 @@
-// Default settings
+/**
+ * YouTube Media Notes for Obsidian - Options Script
+ * 
+ * This script handles the options page functionality:
+ * - Loading saved settings
+ * - Saving user settings
+ * - Initializing default settings
+ */
+
+/**
+ * Default settings for the extension
+ * These will be used if no user settings are found
+ */
 const defaultSettings = {
-  vaultName: "",
-  folderPath: "zz_assets/video_reviews",
-  tags: "VideoReviews",
-  titlePrefix: "Video. ",
-  noteTemplate: "---\nmedia_link: {{url}}\ntags: {{tags}}\n---",
-  closeTabDelay: 2500
+  vaultName: "",                                      // Obsidian vault name (empty = default vault)
+  folderPath: "zz_assets/video_reviews",              // Folder path within the vault
+  tags: "VideoReviews",                               // Default tags for notes
+  titlePrefix: "Video. ",                             // Prefix for note titles
+  noteTemplate: "---\nmedia_link: {{url}}\ntags: {{tags}}\n---", // Default note template
+  closeTabDelay: 2500                                 // Delay before returning to YouTube (ms)
 };
 
-// Load saved settings or use defaults
+/**
+ * Load saved settings from storage or use defaults
+ * Populates the options form with saved values
+ */
 function loadSettings() {
   chrome.storage.sync.get(defaultSettings, function(settings) {
     console.log("Loading settings from storage:", settings);
@@ -21,7 +36,10 @@ function loadSettings() {
   });
 }
 
-// Save settings
+/**
+ * Save settings to storage
+ * Collects values from the form and saves them
+ */
 function saveSettings() {
   const settings = {
     vaultName: document.getElementById('vaultName').value.trim(),
@@ -55,7 +73,10 @@ function saveSettings() {
   });
 }
 
-// Initialize default settings if they don't exist
+/**
+ * Initialize default settings if they don't exist
+ * Checks if settings exist in storage and initializes defaults if not
+ */
 function initializeDefaultSettings() {
   chrome.storage.sync.get(null, function(items) {
     console.log("Current storage contents:", items);
@@ -68,7 +89,10 @@ function initializeDefaultSettings() {
   });
 }
 
-// Clear all settings (for debugging)
+/**
+ * Clear all settings (for debugging)
+ * Removes all saved settings and reloads with defaults
+ */
 function clearAllSettings() {
   chrome.storage.sync.clear(function() {
     console.log("All settings cleared");
@@ -76,7 +100,7 @@ function clearAllSettings() {
   });
 }
 
-// Initialize
+// Initialize when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', function() {
   initializeDefaultSettings();
   loadSettings();
