@@ -11,6 +11,13 @@
 // Log when the background script loads
 console.log("Background script loaded");
 
+// Listen for messages from the popup
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  if (request.action === "handleButtonClick" && request.tab) {
+    handleButtonClick(request.tab);
+  }
+});
+
 /**
  * Default settings for the extension
  * These will be used if no user settings are found

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>YouTube Media Notes</title>
+  <style>
+    body {
+      width: 200px;
+      padding: 10px;
+      font-family: Arial, sans-serif;
+    }
+    .button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 8px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      text-align: center;
+      font-size: 14px;
+    }
+    .primary {
+      background-color: #7C3AED;
+      color: white;
+    }
+    .primary:hover {
+      background-color: #6D28D9;
+    }
+    .secondary {
+      background-color: #F3F4F6;
+      color: #374151;
+    }
+    .secondary:hover {
+      background-color: #E5E7EB;
+    }
+    .icon {
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+    h1 {
+      font-size: 16px;
+      margin-top: 0;
+      margin-bottom: 12px;
+      color: #374151;
+    }
+  </style>
+</head>
+<body>
+  <h1>YouTube Media Notes</h1>
+  <button id="addToObsidian" class="button primary">
+    <span class="icon">+</span> Add to Obsidian
+  </button>
+  <button id="openSettings" class="button secondary">
+    <span class="icon">⚙</span> Settings
+  </button>
+
+  <script src="popup.js"></script>
+</body>
+</html>

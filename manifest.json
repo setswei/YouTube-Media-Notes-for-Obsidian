@@ -5,7 +5,8 @@
   "version": "1.0",
   "permissions": ["activeTab", "storage", "tabs", "*://*.youtube.com/*"],
   "browser_action": {
-    "default_title": "Add to Obsidian Media Notes",
+    "default_title": "YouTube Media Notes for Obsidian",
+    "default_popup": "popup.html",
     "default_icon": {
       "16": "icons/icon16.png",
       "48": "icons/icon64.png",
