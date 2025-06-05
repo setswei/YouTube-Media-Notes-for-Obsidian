@@ -126,6 +126,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 - Inspired by the need to take better notes while watching educational YouTube content
 - Built for the Obsidian community
+- Special thanks to [jemstelos](https://github.com/jemstelos) for creating the [obsidian-media-notes](https://github.com/jemstelos/obsidian-media-notes) plugin, which this extension is designed to complement by embedding videos into Obsidian notes
 
 ---
 
