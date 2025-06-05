@@ -1,40 +1,48 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
   <title>YouTube Media Notes for Obsidian - Options</title>
   <style>
+    /* Common styles for both light and dark modes */
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
       max-width: 800px;
       margin: 0 auto;
-      color: #333;
+      transition: background-color 0.3s, color 0.3s;
     }
+    
     .form-group {
       margin-bottom: 20px;
       padding-bottom: 20px;
-      border-bottom: 1px solid #eee;
+      transition: border-color 0.3s;
     }
+    
     .form-group:last-child {
       border-bottom: none;
     }
+    
     label {
       display: block;
       margin-bottom: 8px;
       font-weight: bold;
     }
+    
     input[type="text"], select, textarea, input[type="number"] {
       width: 100%;
       padding: 10px;
       box-sizing: border-box;
-      border: 1px solid #ddd;
       border-radius: 4px;
       font-size: 14px;
+      transition: background-color 0.3s, color 0.3s, border-color 0.3s;
     }
+    
     textarea {
       min-height: 120px;
       font-family: monospace;
     }
+    
     button {
       background-color: #7C3AED;
       color: white;
@@ -43,62 +51,183 @@
       border-radius: 4px;
       cursor: pointer;
       font-size: 14px;
+      transition: background-color 0.3s;
     }
-    button:hover {
-      background-color: #6D28D9;
-    }
+    
     .status {
       margin-top: 15px;
       padding: 10px;
       border-radius: 4px;
       display: none;
     }
+    
+    .section-title {
+      font-size: 18px;
+      margin-bottom: 15px;
+      transition: color 0.3s;
+    }
+    
+    .setting-description {
+      font-size: 13px;
+      margin-bottom: 8px;
+      transition: color 0.3s;
+    }
+    
+    .help-text {
+      font-size: 12px;
+      margin-top: 5px;
+      transition: color 0.3s;
+    }
+    
+    .template-variables {
+      padding: 10px;
+      border-radius: 4px;
+      margin-top: 10px;
+      transition: background-color 0.3s;
+    }
+    
+    .template-variables code {
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-family: monospace;
+      transition: background-color 0.3s;
+    }
+    
+    footer {
+      margin-top: 30px;
+      font-size: 12px;
+      text-align: center;
+      transition: color 0.3s;
+    }
+    
+    /* Light mode (default) */
+    body {
+      background-color: #ffffff;
+      color: #333333;
+    }
+    
+    .form-group {
+      border-bottom: 1px solid #eee;
+    }
+    
+    input[type="text"], select, textarea, input[type="number"] {
+      border: 1px solid #ddd;
+      background-color: #ffffff;
+      color: #333333;
+    }
+    
+    button:hover {
+      background-color: #6D28D9;
+    }
+    
     .success {
       background-color: #D1FAE5;
       color: #065F46;
     }
+    
     .error {
       background-color: #FEE2E2;
       color: #B91C1C;
     }
+    
     .section-title {
-      font-size: 18px;
-      margin-bottom: 15px;
       color: #4B5563;
     }
+    
     .setting-description {
-      font-size: 13px;
       color: #6B7280;
-      margin-bottom: 8px;
     }
+    
     .vault-section {
       background-color: #F9FAFB;
-      padding: 15px;
-      border-radius: 4px;
-      margin-bottom: 15px;
     }
+    
     .help-text {
-      font-size: 12px;
       color: #6B7280;
-      margin-top: 5px;
     }
+    
     .template-variables {
       background-color: #F3F4F6;
-      padding: 10px;
-      border-radius: 4px;
-      margin-top: 10px;
     }
+    
     .template-variables code {
       background-color: #E5E7EB;
-      padding: 2px 4px;
-      border-radius: 3px;
-      font-family: monospace;
     }
+    
     footer {
-      margin-top: 30px;
-      font-size: 12px;
       color: #9CA3AF;
-      text-align: center;
+    }
+    
+    /* Dark mode */
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #1F2937;
+        color: #E5E7EB;
+      }
+      
+      .form-group {
+        border-bottom: 1px solid #374151;
+      }
+      
+      input[type="text"], select, textarea, input[type="number"] {
+        background-color: #374151;
+        color: #E5E7EB;
+        border: 1px solid #4B5563;
+      }
+      
+      button {
+        background-color: #8B5CF6;
+      }
+      
+      button:hover {
+        background-color: #7C3AED;
+      }
+      
+      .success {
+        background-color: #064E3B;
+        color: #A7F3D0;
+      }
+      
+      .error {
+        background-color: #7F1D1D;
+        color: #FCA5A5;
+      }
+      
+      .section-title {
+        color: #F9FAFB;
+      }
+      
+      .setting-description {
+        color: #D1D5DB;
+      }
+      
+      .vault-section {
+        background-color: #111827;
+      }
+      
+      .help-text {
+        color: #9CA3AF;
+      }
+      
+      .template-variables {
+        background-color: #111827;
+      }
+      
+      .template-variables code {
+        background-color: #1F2937;
+      }
+      
+      footer {
+        color: #6B7280;
+      }
+      
+      a {
+        color: #93C5FD;
+      }
+      
+      a:visited {
+        color: #C4B5FD;
+      }
     }
   </style>
 </head>
