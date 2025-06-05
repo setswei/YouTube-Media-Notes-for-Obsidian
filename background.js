@@ -13,11 +13,24 @@ const defaultSettings = {
 
 // Process the template with data
 function processTemplate(template, data) {
-  return template
+  let processed = template
     .replace(/{{url}}/g, data.url)
     .replace(/{{title}}/g, data.title)
     .replace(/{{tags}}/g, data.tags)
     .replace(/{{timestamp}}/g, data.timestamp);
+  
+  // Add timestamps if available
+  if (data.timestamps && data.timestamps.length > 0) {
+    let timestampsMarkdown = "\n\n## Timestamps\n";
+    
+    data.timestamps.forEach(ts => {
+      timestampsMarkdown += `- [${ts.time} - ${ts.label}](${ts.url})\n`;
+    });
+    
+    processed += timestampsMarkdown;
+  }
+  
+  return processed;
 }
 
 // Create an Obsidian-friendly filename
@@ -64,8 +77,9 @@ function handleButtonClick(tab) {
           return;
         }
 
-        const { url, title, timestamp } = response.data;
+        const { url, title, timestamp, timestamps } = response.data;
         console.log("Processing data:", { url, title, timestamp });
+        console.log("Timestamps found:", timestamps ? timestamps.length : 0);
         
         try {
           // Get settings directly from the settings object
@@ -87,7 +101,8 @@ function handleButtonClick(tab) {
             url,
             title,
             tags,
-            timestamp
+            timestamp,
+            timestamps: timestamps || []
           };
           const content = processTemplate(noteTemplate, templateData);
           
