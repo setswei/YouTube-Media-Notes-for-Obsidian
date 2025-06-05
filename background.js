@@ -159,8 +159,8 @@ function handleButtonClick(tab) {
           // Build the Obsidian URL
           let obsidianUrl = "obsidian://new";
           
-          // Ensure path ends with a slash if it's not empty
-          let path = folderPath || "";
+          // Handle folder path - use empty string if explicitly cleared by user
+          let path = folderPath;
           if (path && !path.endsWith('/')) {
             path += '/';
           }

@@ -43,7 +43,7 @@ function loadSettings() {
 function saveSettings() {
   const settings = {
     vaultName: document.getElementById('vaultName').value.trim(),
-    folderPath: document.getElementById('folderPath').value.trim() || defaultSettings.folderPath,
+    folderPath: document.getElementById('folderPath').value.trim(), // Remove fallback to allow empty paths
     tags: document.getElementById('tags').value.trim() || defaultSettings.tags,
     titlePrefix: document.getElementById('titlePrefix').value || defaultSettings.titlePrefix,
     noteTemplate: document.getElementById('noteTemplate').value || defaultSettings.noteTemplate,
