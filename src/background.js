@@ -23,12 +23,12 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
  * These will be used if no user settings are found
  */
 const defaultSettings = {
-  vaultName: "",                                      // Obsidian vault name (empty = default vault)
-  folderPath: "zz_assets/video_reviews",              // Folder path within the vault
-  tags: "VideoReviews",                               // Default tags for notes
-  titlePrefix: "Video. ",                             // Prefix for note titles
+  vaultName: "",                                           // Obsidian vault name (empty = default vault)
+  folderPath: "",                                           // Folder path within the vault (empty = vault root)
+  tags: "YouTube",                                      // Default tags for notes
+  titlePrefix: "Video. ",                                 // Prefix for note titles
   noteTemplate: "---\nmedia_link: {{url}}\ntags: {{tags}}\n---", // Default note template
-  closeTabDelay: 2500                                 // Delay before returning to YouTube (ms)
+  closeTabDelay: 2500                               // Delay before returning to YouTube (ms)
 };
 
 /**
