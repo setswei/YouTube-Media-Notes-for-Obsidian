@@ -6,8 +6,10 @@ on:
 jobs:
   triage:
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
     steps:
-    - uses: github/issue-labeler@v3
+    - uses: github-actions-up-and-running/issue-labeler@v3.0.0
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
         configuration-path: .github/issue-labeler.yml
