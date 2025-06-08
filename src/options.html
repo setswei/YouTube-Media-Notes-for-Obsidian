@@ -12,27 +12,15 @@
     <!-- Vault Settings Section -->
     <div class="card">
       <h2>Obsidian Vault Settings</h2>
-      <p class="description">Configure how your notes are saved to Obsidian</p>
+      <p class="description">Configure which Obsidian vaults to use</p>
       
-      <div class="vault-section">
-        <div class="form-group">
-          <label for="vaultName">Vault Name:</label>
-          <input type="text" id="vaultName" placeholder="e.g., MyVault">
-          <p class="help-text">Leave empty to use the default vault. This should match exactly the name of your Obsidian vault.</p>
-        </div>
+      <div id="vaults-container">
+        <!-- Vault entries will be added here dynamically -->
       </div>
-    </div>
-
-    <!-- Note Location Section -->
-    <div class="card">
-      <h2>Note Location</h2>
-      <p class="description">Configure where your notes are stored within your vault</p>
       
-      <div class="form-group">
-        <label for="folderPath">Folder Path:</label>
-        <input type="text" id="folderPath" placeholder="e.g., Videos/YouTube">
-        <p class="help-text">The folder path within your vault where notes will be saved. Leave empty to save in the vault root.</p>
-      </div>
+      <button id="add-vault" class="button secondary">
+        <span class="icon">+</span> Add Vault
+      </button>
     </div>
 
     <!-- Note Format Section -->

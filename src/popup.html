@@ -8,9 +8,21 @@
 <body>
   <div class="popup-container">
     <h1>YouTube Media Notes</h1>
-    <button id="addToObsidian" class="button primary">
-      <span class="icon">+</span> Add to Obsidian
-    </button>
+    
+    <div class="popup-actions">
+      <button id="addToObsidian" class="button primary">
+        Add to Obsidian
+      </button>
+      <div class="vault-selector">
+        <button id="vaultDropdownButton" class="button secondary">
+          <span class="icon">▼</span>
+        </button>
+        <div id="vaultDropdown" class="dropdown-content">
+          <!-- Vault options will be added here dynamically -->
+        </div>
+      </div>
+    </div>
+    
     <button id="openSettings" class="button secondary">
       <span class="icon">⚙</span> Settings
     </button>

@@ -14,7 +14,11 @@ console.log("Background script loaded");
 // Listen for messages from the popup
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.action === "handleButtonClick" && request.tab) {
-    handleButtonClick(request.tab);
+    handleButtonClick(
+      request.tab, 
+      request.useDefaultVault !== false, 
+      request.vaultIndex || 0
+    );
   }
 });
 
@@ -23,8 +27,13 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
  * These will be used if no user settings are found
  */
 const defaultSettings = {
-  vaultName: "",                                           // Obsidian vault name (empty = default vault)
-  folderPath: "",                                           // Folder path within the vault (empty = vault root)
+  vaults: [
+    {
+      name: "",  // Empty name means default vault
+      folderPath: "",
+      isDefault: true
+    }
+  ],
   tags: "YouTube",                                      // Default tags for notes
   titlePrefix: "Video. ",                                 // Prefix for note titles
   noteTemplate: "---\nmedia_link: {{url}}\ntags: {{tags}}\n---", // Default note template
@@ -40,62 +49,74 @@ const defaultSettings = {
  * @returns {string} - The processed template with all variables replaced
  */
 function processTemplate(template, data) {
-  // Replace template variables with actual data
-  let processed = template
-    .replace(/{{url}}/g, data.url)
-    .replace(/{{title}}/g, data.title)
-    .replace(/{{tags}}/g, data.tags)
-    .replace(/{{timestamp}}/g, data.timestamp);
+  let content = template;
   
-  // Add timestamps if available
-  if (data.timestamps && data.timestamps.length > 0) {
-    let timestampsMarkdown = "\n\n## Timestamps\n\n";
-    
-    // Create markdown table header
-    timestampsMarkdown += "| Time | Chapter |\n";
-    timestampsMarkdown += "|------|--------|\n";
-    
-    // Add each timestamp as a table row
-    data.timestamps.forEach(ts => {
-      timestampsMarkdown += `| [${ts.time}](${ts.url}) | ${ts.label} |\n`;
-    });
-    
-    processed += timestampsMarkdown;
+  // Replace variables in the template
+  for (const key in data) {
+    if (key !== "timestamps") {
+      const regex = new RegExp(`{{${key}}}`, 'g');
+      content = content.replace(regex, data[key]);
+    }
   }
   
-  return processed;
+  // Add timestamps table if available
+  if (data.timestamps && data.timestamps.length > 0) {
+    const baseUrl = data.url.split('&t=')[0];
+    let timestampTable = "\n\n## Timestamps\n\n| Time | Chapter |\n|------|--------|\n";
+    
+    data.timestamps.forEach(ts => {
+      const timeLink = `[${ts.time}](${baseUrl}&t=${ts.seconds})`;
+      timestampTable += `| ${timeLink} | ${ts.title} |\n`;
+    });
+    
+    content += timestampTable;
+  }
+  
+  return content;
 }
 
 /**
- * Create an Obsidian-friendly filename
- * Replaces characters that might cause issues in filenames
+ * Make a string safe for use as an Obsidian filename
+ * Removes special characters and limits length
  * 
  * @param {string} title - The original title
- * @param {string} prefix - Prefix to add to the title
- * @returns {string} - The sanitized filename with prefix
+ * @param {string} prefix - Optional prefix to add to the title
+ * @returns {string} - A safe filename
  */
-function makeObsidianFriendly(title, prefix) {
-  return prefix + title.replace(/[:/\\^|#]/g, ".");
+function makeObsidianFriendly(title, prefix = "") {
+  // Add prefix if provided
+  if (prefix) {
+    title = prefix + title;
+  }
+  
+  // Limit length
+  if (title.length > 100) {
+    title = title.substring(0, 100) + "...";
+  }
+  
+  return title;
 }
 
 /**
- * Sanitize a filename to be safe for file systems
- * Removes characters that are not allowed in filenames
+ * Sanitize a filename to remove invalid characters
  * 
- * @param {string} fileName - The filename to sanitize
- * @returns {string} - The sanitized filename
+ * @param {string} filename - The filename to sanitize
+ * @returns {string} - A sanitized filename
  */
-function sanitizeFileName(fileName) {
-  return fileName.replace(/[\\/:*?"<>|]/g, ".");
+function sanitizeFileName(filename) {
+  // Replace invalid characters with underscores
+  return filename.replace(/[\\/:*?"<>|]/g, '_');
 }
 
 /**
- * Handle the extension button click
- * This is the main function that runs when the user clicks the extension button
+ * Handle button click from popup
+ * This is the main function that processes the YouTube video and creates a note in Obsidian
  * 
  * @param {object} tab - The current browser tab
+ * @param {boolean} useDefaultVault - Whether to use the default vault
+ * @param {number} vaultIndex - Index of the selected vault (if not using default)
  */
-function handleButtonClick(tab) {
+function handleButtonClick(tab, useDefaultVault = true, vaultIndex = 0) {
   console.log("Extension button clicked", tab);
   
   // Check if we're on a YouTube page
@@ -109,8 +130,20 @@ function handleButtonClick(tab) {
   chrome.storage.sync.get(defaultSettings, function(settings) {
     console.log("Settings loaded from storage:", settings);
     
+    // Get the selected vault
+    let selectedVault;
+    if (useDefaultVault) {
+      // Find the default vault
+      selectedVault = settings.vaults.find(vault => vault.isDefault) || settings.vaults[0];
+    } else {
+      // Use the specified vault index
+      selectedVault = settings.vaults[vaultIndex] || settings.vaults[0];
+    }
+    
+    console.log("Using vault:", selectedVault);
+    
     // Inject content script if not already injected
-    chrome.tabs.executeScript(tab.id, { file: "content.js" }, function() {
+    chrome.tabs.executeScript(tab.id, { file: "src/content.js" }, function() {
       if (chrome.runtime.lastError) {
         console.error("Script injection failed:", chrome.runtime.lastError);
         return;
@@ -132,9 +165,9 @@ function handleButtonClick(tab) {
         console.log("Timestamps found:", timestamps ? timestamps.length : 0);
         
         try {
-          // Get settings directly from the settings object
-          const vaultName = settings.vaultName;
-          const folderPath = settings.folderPath;
+          // Get settings from the selected vault and general settings
+          const vaultName = selectedVault.name;
+          const folderPath = selectedVault.folderPath;
           const titlePrefix = settings.titlePrefix;
           const tags = settings.tags;
           const noteTemplate = settings.noteTemplate;
@@ -178,26 +211,19 @@ function handleButtonClick(tab) {
           
           console.log("Opening Obsidian URL:", obsidianUrl);
           
-          // Instead of creating a new tab, update the current tab
-          // and then navigate back to the YouTube page after a delay
-          const currentUrl = tab.url;
-          
-          chrome.tabs.update(tab.id, { url: obsidianUrl }, function() {
-            // Set a timeout to navigate back to the YouTube video
+          // Open the URL in a new tab
+          chrome.tabs.create({ url: obsidianUrl }, function(newTab) {
+            // Close the tab after a delay
             setTimeout(function() {
-              chrome.tabs.update(tab.id, { url: currentUrl }, function() {
-                console.log("Navigated back to YouTube video");
-              });
-            }, settings.closeTabDelay || 2500); // Use the configured delay
+              chrome.tabs.remove(newTab.id);
+            }, settings.closeTabDelay);
           });
+          
         } catch (error) {
-          console.error("Error processing data:", error);
+          console.error("Error processing note:", error);
           alert("Error creating note: " + error.message);
         }
       });
     });
   });
 }
-
-// Register the button click handler
-chrome.browserAction.onClicked.addListener(handleButtonClick);
