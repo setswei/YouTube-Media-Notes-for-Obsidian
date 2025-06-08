@@ -1,0 +1,16 @@
+name: Issue Assignment
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  auto-assign:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Auto-assign issue'
+        uses: pozil/auto-assign-issue@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          assignees: ${{ github.repository_owner }}
+          numOfAssignee: 1

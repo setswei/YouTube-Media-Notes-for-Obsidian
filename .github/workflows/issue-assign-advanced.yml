@@ -1,0 +1,17 @@
+name: Advanced Issue Assignment
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  auto-assign:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Auto-assign issue using round robin'
+        uses: pozil/auto-assign-issue@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          assignees: ${{ github.repository_owner }}, contributor1, contributor2
+          numOfAssignee: 1
+          round-robin: true
